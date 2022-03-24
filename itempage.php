@@ -24,6 +24,7 @@ $db=mysqli_select_db($connect,'maxcart');
             background-color: #072227;
             background-size: 100%;
             position: sticky;
+            z-index: 1000;
             top: 0%;
             }
         #navbar{
@@ -89,7 +90,7 @@ $db=mysqli_select_db($connect,'maxcart');
                                 </div>
                                 <div class="card-body col-md-2">
                                     <h3 class="p-name" ><?=$row['name'];?></h3>
-                                    <h6><?=$row['category'];?></h6>      
+                                    <h6 class="text-muted"><?=$row['category'];?></h6>      
                                     <p><?=$row['Description'];?></p>                     
                                     <p class="p-price">$<?=number_format($row['price'],2);?></p>
                                     <div >

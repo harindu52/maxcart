@@ -25,6 +25,7 @@ $db=mysqli_select_db($connect,'maxcart');
             background-size: 100%;
             position: sticky;
             top: 0%;
+            z-index: 1000;
             }
         #navbar{
             display: flex;
@@ -50,7 +51,7 @@ $db=mysqli_select_db($connect,'maxcart');
             background-repeat: no-repeat;
             background-size: 100%;
             background-position: top;
-            height: 80vh;
+            height: 75vh;
         }
         .col-md-2{
             margin-bottom:20px;
@@ -83,14 +84,32 @@ $db=mysqli_select_db($connect,'maxcart');
         .btn:hover{
             background-color:#41AEA9;
         }
-
+        .p-name{
+            display: block;
+            display: -webkit-box;
+            max-width: 400px;
+            height: 50px;
+            margin: 0 auto;
+            line-height:1.5;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .btn-group{
+            margin-bottom: 10px;
+            box-shadow: 0 10px 20px rgba(0,0,0,.12), 0 4px 8px rgba(0,0,0,.06);
+            transition:.3s transform cubic-bezier(.155,1.105,.295,1.12),.3s box-shadow,.3s -webkit-transform cubic-bezier(.155,1.105,.295,1.12);
+            cursor:pointer;  
+        }
+        
     </style>
 </head>
 <body >
     <div class="Header" >
         <a href=""><img src="Images/Logo.png" class="logo col-md-16" width="80px" height="80px"></a>
         <div class="container ">
-            <form action="" method="GET" class="searchbar">
+            <form action="Searchitem.php" method="GET" class="searchbar">
             <div class="row">
                 <div class="col-md-5 pt-1" >
                 <input type="search" name="search" class="form-control " placeholder="Search Here..." value="<?php if(isset($_GET['search'])){echo $_GET['search'];}?>"/>
@@ -109,6 +128,26 @@ $db=mysqli_select_db($connect,'maxcart');
                 $query_run=mysqli_query($connect,$myquery);
 
                 if(mysqli_num_rows($query_run)>0){
+                    
+                    while($row = mysqli_fetch_array($query_run)){ ?>
+                    <div class="col-md-2" id="product1">
+                    <a href="itempage.php?name=<?php echo $row['name'];?>" class="productcard" style="text-decoration:none; color:black;">
+                        <div class="card h-100 " >
+                        
+                            <div class="text-center">
+                                <?php echo'<img src="data:image;base64,'.base64_encode($row['image']).'"/ height="150px">'?>
+                                <div class="card-body ">
+                                    <p class="p-name" ><?=$row['name'];?></p>                           
+                                    <p class="p-price">$<?=number_format($row['price'],2);?></p>
+                                    <div class="card-footer">
+                                    <button class="buy-btn">Buy</button>
+                                    </div>
+                                </div>
+                            </div>
+                    </div>
+                    </a>
+                    </div>
+                    <?php }
                     
                 }
             }
@@ -130,7 +169,19 @@ $db=mysqli_select_db($connect,'maxcart');
         <h2>Shop with us</h2>
         
     </div>
-    <div class="container-fluid ">
+    <div class="container-fluid">
+    <div class="btn-group col-md-12 " role="group">
+        <button type="button" class="btn btn-secondary">All</button>
+        <button type="button" class="btn btn-secondary">Shirts</button>
+        <button type="button" class="btn btn-secondary">T-shirts</button>
+        <button type="button" class="btn btn-secondary">Dresses</button>
+        <button type="button" class="btn btn-secondary">Kids</button>
+        <button type="button" class="btn btn-secondary">Shoes</button>
+        <button type="button" class="btn btn-secondary">Watches</button>
+    </div>
+    </div>
+    
+    <div class="container-fluid">
             <div class="col-md-12" >
                 <div class="row container-fluid" >
                     <?php
@@ -146,7 +197,7 @@ $db=mysqli_select_db($connect,'maxcart');
                                 <?php echo'<img src="data:image;base64,'.base64_encode($row['image']).'"/ height="150px">'?>
                                 <div class="card-body ">
                                     <p class="p-name" ><?=$row['name'];?></p>                           
-                                    <p class="p-price">$<?=number_format($row['price'],2);?></p>
+                                    <p class="p-price text-muted">$<?=number_format($row['price'],2);?></p>
                                     <div class="card-footer">
                                     <button class="buy-btn">Buy</button>
                                     </div>
