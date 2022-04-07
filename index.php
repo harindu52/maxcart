@@ -12,6 +12,7 @@ $db=mysqli_select_db($connect,'maxcart');
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/fontawesome.min.css" integrity="sha384-jLKHWM3JRmfMU0A5x5AkjWkw/EYfGUAGagvnfryNV3F9VqM98XiIH7VBGVoxVSc7" crossorigin="anonymous">
     <script src="https://kit.fontawesome.com/d18ef4fa3a.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
     <style>
         body{
             background-image:url("Images/background1.png")
@@ -78,11 +79,12 @@ $db=mysqli_select_db($connect,'maxcart');
             background-color:white;
             color:#41AEA9;
             border-radius:4px;
-            size:150%;
+            size:100%;
             border:none;
         }
         .btn:hover{
             background-color:#41AEA9;
+            color:white;
         }
         .p-name{
             display: block;
@@ -101,9 +103,14 @@ $db=mysqli_select_db($connect,'maxcart');
             box-shadow: 0 10px 20px rgba(0,0,0,.12), 0 4px 8px rgba(0,0,0,.06);
             transition:.3s transform cubic-bezier(.155,1.105,.295,1.12),.3s box-shadow,.3s -webkit-transform cubic-bezier(.155,1.105,.295,1.12);
             cursor:pointer;  
+            
         }
-        
+        .btn-group:after{
+            background-color:#41AEA9;
+            color:white;
+        }
     </style>
+    
 </head>
 <body >
     <div class="Header" >
@@ -115,7 +122,7 @@ $db=mysqli_select_db($connect,'maxcart');
                 <input type="search" name="search" class="form-control " placeholder="Search Here..." value="<?php if(isset($_GET['search'])){echo $_GET['search'];}?>"/>
                 </div>
                 <div class="col-md-1 mb-1">
-                <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i></button>
+                <button type="submit" class="btn btn-outline-light"><i class="fas fa-search"></i></button>
                 </div>
                 </div>
                   
@@ -169,23 +176,64 @@ $db=mysqli_select_db($connect,'maxcart');
         <h2>Shop with us</h2>
         
     </div>
-    <div class="container-fluid">
-    <div class="btn-group col-md-12 " role="group">
-        <button type="button" class="btn btn-secondary">All</button>
-        <button type="button" class="btn btn-secondary">Shirts</button>
-        <button type="button" class="btn btn-secondary">T-shirts</button>
-        <button type="button" class="btn btn-secondary">Dresses</button>
-        <button type="button" class="btn btn-secondary">Kids</button>
-        <button type="button" class="btn btn-secondary">Shoes</button>
-        <button type="button" class="btn btn-secondary">Watches</button>
-    </div>
-    </div>
     
-    <div class="container-fluid">
+    <div class="container-fluid ">
+            <form action="index.php" method="GET" class="categorybar">
+            <div class="btn-group col-md-12 " role="group" >
+                <button type="submit" class="btn active " name="category" value="all">All</button>
+                <button type="submit" class="btn btn-outline-light" name="category" value="shirts">Shirts</button>
+                <button type="submit" class="btn btn-outline-light" name="category" value="tshirts">T-shirts</button>
+                <button type="submit" class="btn btn-outline-light" name="category" value="dresses">Dresses</button>
+                <button type="submit" class="btn btn-outline-light" name="catrgory" value="kids">Kids</button>
+                <button type="submit" class="btn btn-outtine-light" name="category" value="shoes">Shoes</button>
+                <button type="submit" class="btn btn-outline-light" name="category" value="watches" >Watches</button>
+        </div>
+            </form>
             <div class="col-md-12" >
                 <div class="row container-fluid" >
-                    <?php
-                    $query = "SELECT * FROM items";
+            <?php
+            if(isset($_GET['category']))
+            {
+                $filter=$_GET['category'];
+                
+                if($filter=="all")
+                {
+                    $myquery="SELECT * FROM items";
+                }
+                else
+                {
+                    $myquery="SELECT * FROM items WHERE category LIKE '$filter'";
+                }
+                
+                $query_run=mysqli_query($connect,$myquery);
+
+                if(mysqli_num_rows($query_run)>0){
+                    
+                    while($row = mysqli_fetch_array($query_run)){ ?>
+                    <div class="col-md-2" id="product1">
+                    <a href="itempage.php?name=<?php echo $row['name'];?>" class="productcard" style="text-decoration:none; color:black;">
+                        <div class="card h-100 " >
+                        
+                            <div class="text-center">
+                                <?php echo'<img src="data:image;base64,'.base64_encode($row['image']).'"/ height="150px">'?>
+                                <div class="card-body ">
+                                    <p class="p-name" ><?=$row['name'];?></p>                           
+                                    <p class="p-price">$<?=number_format($row['price'],2);?></p>
+                                    <div class="card-footer">
+                                    <button class="buy-btn">Buy</button>
+                                    </div>
+                                </div>
+                            </div>
+                    </div>
+                    </a>
+                    </div>
+                    <?php }
+                    
+                }
+            }
+            else
+            {
+                $query = "SELECT * FROM items";
                     $result= mysqli_query($connect,$query);
 
                     while($row = mysqli_fetch_array($result)){ ?>
@@ -207,10 +255,20 @@ $db=mysqli_select_db($connect,'maxcart');
                     </a>
                     </div>
                     <?php }
-                    ?>
-                    </div>
+            }
+            ?>
             </div>
+        </div>
+        <script type="text/javascript">
+            $(document).on('click','btn',function(){
+                $(this).addClass('active').sibilngs().removeClass('active')
+            })
+        </script>
+
     </div>
+    </div>
+    
+    
     <footer class="mt-5 py-5">
         <div class="row container mx-auto pt-5">
             <div class="footer-one col-lg-3 col-md-6 col-12 text-center">
