@@ -1,7 +1,4 @@
-<?php
-$connect= mysqli_connect("localhost","root","");
-$db=mysqli_select_db($connect,'maxcart');
-?>
+
 <!DOCTYPE html>
 <head>
     <link rel="stylesheet" href="Style.css">
@@ -24,8 +21,8 @@ $db=mysqli_select_db($connect,'maxcart');
             background-color: #072227;
             background-size: 100%;
             position: sticky;
-            top: 0%;
             z-index: 1000;
+            top: 0%;
             }
         #navbar{
             display: flex;
@@ -45,69 +42,72 @@ $db=mysqli_select_db($connect,'maxcart');
         #navbar li a:hover{
             color:#41AEA9;
         }
-        
-        .col-md-2{
-            margin-bottom:20px;
-            margin-top:10px;
-            
-        }
-        
         .card{
-            text-decoration:none;
-            border-radius: 8px;
+            border-radius: 12px;
             margin-bottom:10px;
-            box-shadow: 0 10px 20px rgba(0,0,0,.12), 0 4px 8px rgba(0,0,0,.06);
+            box-shadow:0 6px 10px rgba(0,0,0,0.8),0 0 6px rgba(0,0,0,.05);
             transition:.3s transform cubic-bezier(.155,1.105,.295,1.12),.3s box-shadow,.3s -webkit-transform cubic-bezier(.155,1.105,.295,1.12);
             cursor:pointer;
         }
-        .card:hover{
-            transform:scale(1.05);
-            
-            box-shadow:0 6px 10px rgba(0,0,0,0.8),0 0 6px rgba(0,0,0,.05);
-        }
         .card img{
-            margin:5px;
+            margin:20px;
         }
-        .btn{
-            background-color:white;
-            color:#41AEA9;
-            border-radius:4px;
-            size:150%;
-            border:none;
+        .col-md-10{
+            margin-top:20px;
         }
-        .btn:hover{
-            background-color:#41AEA9;
-            color:white;
-        }
-        .p-name{
-            display: block;
-            display: -webkit-box;
-            max-width: 400px;
-            height: 50px;
-            margin: 0 auto;
-            line-height:1.5;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
+        .col-lg-3{
             overflow: hidden;
-            text-overflow: ellipsis;
         }
+        .details {
+            width: 40%;
+            height: 80%;
+            position: absolute;
+            top: 10%;
+            right: 3%;
+          }
+          .icons {
+            display: flex;
+            justify-content: center;
+            position: absolute;
+            right: 20%;
+            bottom: 20%;
+            text-align: center;
+          }
+          .social-icon {
+            height: 46px;
+            width: 46px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 0.45rem;
+            color: rgb(44, 22, 30);
+            border-radius: 50%;
+            border: 1px solid rgb(44, 22, 30);
+            text-decoration: none;
+            font-size: 1.5rem;
+            font-weight: bolder;
+            transition: 0.3s;
+          }
+    
+          .social-icon:hover {
+            color: rgb(0, 0, 204);
+            border-color: rgb(0, 0, 204);
+          }
+          p {
+            position: absolute;
+            right: 0%;
+            text-align: center;
+            font-family: "Poppins", sans-serif;
+            color: rgb(44, 22, 30);
+            font-weight: bolder;
+            font-size: 14px;
+            text-align: center;
+          }
     </style>
 </head>
 <body >
     <div class="Header" >
-        <a href=""><img src="Images/Logo.png" class="logo col-md-16" width="80px" height="80px"></a>
-        <div class="container ">
-            <form action="Searchitem.php" method="GET" class="searchbar">
-            <div class="row">
-                <div class="col-md-5 pt-1" >
-                <input type="search" name="search" class="form-control " placeholder="Search Here..." value="<?php if(isset($_GET['search'])){echo $_GET['search'];}?>"/>
-                </div>
-                <div class="col-md-1 mb-1">
-                <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i></button>
-                </div>
-                </div>      
-            </form>         
-        </div>
+        <a href=""><img src="Images/Logo.png" class="logo" width="80px" height="80px"></a>
         <div>
             <ul id="navbar">
                 <li><a href="index.php">Home</a></li>
@@ -116,50 +116,43 @@ $db=mysqli_select_db($connect,'maxcart');
                 <li><a href="Signup.html">Sign up</a></li>
             </ul>
         </div>
-
     </div>
+
+        <div class="details">
+          <h1>About Us</h1>
+          <p>
+            Max cart has been changing the face of retail since our first store
+            opened in 2022. We’ve continued to pursue ways to bring technology into
+            retail to offer customers a seamless shopping experience. You can find a
+            fashion items including clothes, watches, sunglasses etc. from Max cart
+            store, but as customers increasingly shop across digital and physical
+            storefronts, we’ve made it easier for you to find what you need right at
+            your fingertips. We’re providing customers with more ways to save time
+            and money while reimagining how digital and physical shopping work
+            together. We are also one of the fastest growing and most dynamic
+            e-commerce organizations. We're creating an experience that lets
+            customers shop anytime, anywhere delivering exactly what they want, when
+            they want it.
+          </p>
+          <div class="icons">
+            <a href="#" class="social-icon">
+              <i class="fab fa-facebook-f"></i>
+            </a>
+            <a href="#" class="social-icon">
+              <i class="fab fa-instagram"></i>
+            </a>
     
-    <div class="container-fluid  ">
-            <div class="col-md-12" >
-                <div class="row container-fluid" >
-                <?php
-            if(isset($_GET['search']))
-            {
-                $filter=$_GET['search'];
-                $myquery="SELECT * FROM items WHERE name LIKE '%$filter%'";
-                $query_run=mysqli_query($connect,$myquery);
+            <a href="#" class="social-icon">
+              <i class="fab fa-google"></i>
+            </a>
+    
+            <a href="#" class="social-icon">
+              <i class="fab fa-twitter"></i>
+            </a>
+          </div>
+        </div>
+      </body> 
 
-                if(mysqli_num_rows($query_run)>0){
-                    
-                    while($row = mysqli_fetch_array($query_run)){ ?>
-                    <div class="col-md-2" id="product1">
-                    <a href="itempage.php?name=<?php echo $row['name'];?>" class="productcard" style="text-decoration:none; color:black;">
-                        <div class="card h-100 " >
-                        
-                            <div class="text-center">
-                                <?php echo'<img src="data:image;base64,'.base64_encode($row['image']).'"/ height="150px">'?>
-                                <div class="card-body ">
-                                    <p class="p-name" ><?=$row['name'];?></p>                           
-                                    <p class="p-price text-muted">$<?=number_format($row['price'],2);?></p>
-                                    <div class="card-footer">
-                                    <form action="" method="post">
-                                        <button type="submit" class="btn">Add to cart</button>
-                                    </form>
-                                    </div>
-                                </div>
-                            </div>
-                    </div>
-                    </a>
-                    </div>
-                    <?php }
-                    
-                }
-            }
-            ?>
-
-                    </div>
-            </div>
-    </div>
     <footer class="mt-5 py-5">
         <div class="row container mx-auto pt-5">
             <div class="footer-one col-lg-3 col-md-6 col-12 text-center">

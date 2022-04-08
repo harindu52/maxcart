@@ -181,7 +181,7 @@ $db=mysqli_select_db($connect,'maxcart');
     </div>
     
     <div class="cover">
-        <h2>Shop with us</h2>
+        <h2></h2>
         
     </div>
     
@@ -192,7 +192,7 @@ $db=mysqli_select_db($connect,'maxcart');
                 <button type="submit" class="btn btn-outline-light" name="category" value="shirts">Shirts</button>
                 <button type="submit" class="btn btn-outline-light" name="category" value="tshirts">T-shirts</button>
                 <button type="submit" class="btn btn-outline-light" name="category" value="dresses">Dresses</button>
-                <button type="submit" class="btn btn-outline-light" name="catrgory" value="kids">Kids</button>
+                <button type="submit" class="btn btn-outline-light" name="catrgory" value="Kids">Kids</button>
                 <button type="submit" class="btn btn-outtine-light" name="category" value="shoes">Shoes</button>
                 <button type="submit" class="btn btn-outline-light" name="category" value="watches" >Watches</button>
         </div>
@@ -321,7 +321,7 @@ $db=mysqli_select_db($connect,'maxcart');
                     <li><a href="#">Help Center</a></li>
                     <li><a href="#">Guidelines</a></li>
                     <li><a href="#">Copyright</a></li>
-                    <li><a href="#">About Us</a></li>
+                    <li><a href="about.html">About Us</a></li>
                 </ul>
             </div>
         </div>
