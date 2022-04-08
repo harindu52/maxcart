@@ -35,7 +35,7 @@ $db=mysqli_select_db($connect,'maxcart');
         }
         #navbar li{
             list-style: none;
-            padding: 0 20px;
+            padding: 0 30px;
         }   
         #navbar li a{
             text-decoration: none;
@@ -147,7 +147,15 @@ $db=mysqli_select_db($connect,'maxcart');
                                     <p class="p-name" ><?=$row['name'];?></p>                           
                                     <p class="p-price">$<?=number_format($row['price'],2);?></p>
                                     <div class="card-footer">
-                                    <button class="buy-btn">Buy</button>
+                                    <form action="myCart.php?name=<?=$row['name'];?>" method="post">
+                                        <input type="number" name="quantity" value="1" min="1" placeholder="Quantity" class="form-control">
+                                        <input type="hidden" name="name" value="<?=$row['name'];?>">
+                                        <input type="hidden" name="category" value="<?=$row['category'];?>">
+                                        <input type="hidden" name="image" value="<?php echo'<img src="data:image;base64,'.base64_encode($row['image']).'"/>'?>">
+                                        <input type="hidden" name="price" value="<?=number_format($row['price'],2);?>">
+                                        <button type="submit" name="add_to_cart" class="btn" value="Ädd to cart">Add to cart</button>
+                                        
+                                    </form>
                                     </div>
                                 </div>
                             </div>
@@ -164,8 +172,8 @@ $db=mysqli_select_db($connect,'maxcart');
         <div>
             <ul id="navbar">
                 <li><a href="index.php">Home</a></li>
-                <li><a href="">Wishlist</a></li>
-                <li><a href="cart.html">My Cart</a></li>
+                <li><a href="wishlist.php">Wishlist</a></li>
+                <li><a href="myCart.php">My Cart</a></li>
                 <li><a href="Signup.html">Sign up</a></li>
             </ul>
         </div>
@@ -220,7 +228,9 @@ $db=mysqli_select_db($connect,'maxcart');
                                     <p class="p-name" ><?=$row['name'];?></p>                           
                                     <p class="p-price">$<?=number_format($row['price'],2);?></p>
                                     <div class="card-footer">
-                                    <button class="buy-btn">Buy</button>
+                                    <form action="" method="post">
+                                        <button type="submit" class="btn">Add to cart</button>
+                                    </form>
                                     </div>
                                 </div>
                             </div>
@@ -247,7 +257,9 @@ $db=mysqli_select_db($connect,'maxcart');
                                     <p class="p-name" ><?=$row['name'];?></p>                           
                                     <p class="p-price text-muted">$<?=number_format($row['price'],2);?></p>
                                     <div class="card-footer">
-                                    <button class="buy-btn">Buy</button>
+                                    <form action="" method="post">
+                                        <button type="submit" class="btn">Add to cart</button>
+                                    </form>
                                     </div>
                                 </div>
                             </div>

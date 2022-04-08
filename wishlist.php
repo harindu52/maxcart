@@ -1,3 +1,49 @@
+<?php
+$connect= mysqli_connect("localhost","root","");
+$db=mysqli_select_db($connect,'maxcart');
+session_start();
+
+if(isset($_POST['add_to_cart']))
+{                            
+    if(isset($_SESSION['wishlist']))
+    {
+        $session_array_id=array_column($_SESSION['wishlist'],"name");
+        if(!in_array($_GET['name'],$session_array_id))
+        {
+            $session_array=array(
+                "name"=>$_GET['name'],
+                "image"=>$_POST['image'],                
+                "price"=>$_POST['price'],
+                "Category"=>$_POST['category']
+                );
+            $_SESSION['wishlist'][]=$session_array;
+        }
+    }
+    else
+    {
+        $session_array=array(
+            "name"=>$_GET['name'],
+            "image"=>$_POST['image'],
+            "price"=>$_POST['price'],
+            "Category"=>$_POST['category']
+        );
+        $_SESSION['wishlist'][]=$session_array;
+        
+    }
+}
+if(isset($_GET['action'])){
+    if($_GET['action']=="clearall"){
+        unset($_SESSION['wishlist']);
+    }
+    if($_GET['action']=="remove"){
+        foreach($_SESSION['wishlist'] as $key =>$value){
+            if($value['name']==$_GET['name']){
+                unset($_SESSION['wishlist'][$key]);
+            }
+        }
+    }
+}
+?>
 <!DOCTYPE html>
 <head>
     <link rel="stylesheet" href="Style.css">
@@ -41,18 +87,25 @@
         #navbar li a:hover{
             color:#41AEA9;
         }
-        div.cover{
-            background-image: url("Images/cover1.jpg");
-            background-repeat: no-repeat;
-            background-size: 100%;
-            background-position: top;
-            height: 100vh;
+        .card{
+            border-radius: 12px;
+            margin-bottom:10px;
+            box-shadow:0 6px 10px rgba(0,0,0,0.8),0 0 6px rgba(0,0,0,.05);
+            transition:.3s transform cubic-bezier(.155,1.105,.295,1.12),.3s box-shadow,.3s -webkit-transform cubic-bezier(.155,1.105,.295,1.12);
+            cursor:pointer;
         }
-        
+        .card img{
+            margin:20px;
+        }
+        .col-md-10{
+            margin-top:20px;
+        }
+        .col-lg-3{
+            overflow: hidden;
+        }
     </style>
 </head>
-<body>
-  <!--git test-->
+<body >
     <div class="Header" >
         <a href=""><img src="Images/Logo.png" class="logo" width="80px" height="80px"></a>
         <div>
@@ -64,83 +117,48 @@
             </ul>
         </div>
     </div>
-    
-    <div class="d-flex justify-content-center">
-    <div class="wrapper ">
-        <div class="title-text">
-          <div class="title login">Login Form</div>
-          <div class="title signup">Signup Form</div>
+    <div class="container-fluid ">
+        <div class="col-md-10 col-lg-12" >
+            <div class="row container-fluid" >
+                <div class="col-md-12" id="product1">
+                    <div class="card h-100 " >
+                        <div class="row">
+                            <table class="table table-hover table-fixed ">
+                                <thead class="col-lg-12"><tr>
+                                <th><div class="w-50 ml-200">Name</div></th>
+                                <th><div class="w-100">Category</div></th>
+                                <th><div class="w-100">Price</div></th>
+                                <th></th>
+                                </tr></thead>
+                                
+                            <tbody>  
+                            <?php
+                             
+                            if(!empty($_SESSION['wishlist'])){
+                                foreach($_SESSION['wishlist'] as $key =>$value){ ?>
+                                    <tr>
+                                    <td><div class="w-100"><?=$value['name'];?></div></td>
+                                    <td><div class="w-100"><?=$value['Category'];?></div></td>
+                                    <td><div class="w-100"><?=$value['price'];?></div></td>
+                                    
+                                    <td><a href="wishlist.php?action=remove&name=<?=$value['name'];?>">
+                                        <button class="btn btn-danger">Remove</button></a></td>
+                                    </tr>
+                                    
+                                <?php
+                                }
+                            }
+                            
+                            ?>
+                            <tr><td colspan="3"></td><td><a href="wishlist.php?action=clearall">
+                                        <button class="btn btn-danger">Clear</button></a></td></tr></tbody>
+                              </table>      
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="form-container">
-          <div class="slide-controls">
-            <input type="radio" name="slide" id="login" checked />
-            <input type="radio" name="slide" id="signup" />
-            <label for="login" class="slide login">Login</label>
-            <label for="signup" class="slide signup">Signup</label>
-            <div class="slider-tab"></div>
-          </div>
-          <div class="form-inner">
-            <form action="home.html" class="login">
-              <div class="field">
-                <input type="text" placeholder="Email Address" required />
-              </div>
-              <div class="field">
-                <input type="password" placeholder="Password" required />
-              </div>
-              <div class="pass-link">
-                <a href="#">Forgot password?</a>
-              </div>
-              <div class="field btn">
-                <div class="btn-layer"></div>
-                <input type="submit" value="Login" />
-              </div>
-              <div class="signup-link">
-                Sign up if not a member ! <a href="">Signup now</a>
-              </div>
-            </form>
-            <form action="home.html" class="signup">
-              <div class="field">
-                <input type="text" placeholder="Name" required />
-              </div>
-              <div class="field">
-                <input type="email" placeholder="Email Address" required />
-              </div>
-              <div class="field">
-                <input type="password" placeholder="Password" required />
-              </div>
-              <div class="field">
-                <input type="password" placeholder="Confirm password" required />
-              </div>
-              <div class="field btn">
-                <div class="btn-layer"></div>
-                <input type="submit" value="Signup" />
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
-        </div>
-        
-      <script>
-        const loginText = document.querySelector(".title-text .login");
-        const loginForm = document.querySelector("form.login");
-        const loginBtn = document.querySelector("label.login");
-        const signupBtn = document.querySelector("label.signup");
-        const signupLink = document.querySelector("form .signup-link a");
-        signupBtn.onclick = () => {
-          loginForm.style.marginLeft = "-50%";
-          loginText.style.marginLeft = "-50%";
-        };
-        loginBtn.onclick = () => {
-          loginForm.style.marginLeft = "0%";
-          loginText.style.marginLeft = "0%";
-        };
-        signupLink.onclick = () => {
-          signupBtn.click();
-          return false;
-        };
-      </script>
-  
+    </div>
     <footer class="mt-5 py-5">
         <div class="row container mx-auto pt-5">
             <div class="footer-one col-lg-3 col-md-6 col-12 text-center">
